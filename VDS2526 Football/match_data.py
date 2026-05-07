@@ -2,8 +2,6 @@
 from pathlib import Path
 from sys import displayhook
 import pandas as pd
-import pytest
-
 
 #define our folder paths and read in the data
 BASE = Path("/Users/martaespipou/Documents/tercer de carrera/visualisation in data science/project/VDS2526 Football")
