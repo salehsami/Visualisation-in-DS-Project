@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Barcelona Performance Story</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <nav class="topbar">
+        <span class="eyebrow">Visualisation in Data Science</span>
+        <a href="#report-notes" class="report-link">Implementation notes</a>
+      </nav>
+      <div class="hero-copy">
+        <p class="kicker">FC Barcelona performance story</p>
+        <h1>From possession to pressure points: a connected football story</h1>
+        <p class="lede">
+          This prototype turns four isolated analyses into one decision flow:
+          does Barcelona's style still work, when does it break down, which
+          players fit the plan, and how does the club compare with elite rivals?
+        </p>
+        <div class="hero-actions">
+          <a href="#storyline" class="button button-primary">See the story arc</a>
+          <a href="#visual-1" class="button button-secondary">Jump to visuals</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section id="storyline" class="panel panel-story">
+        <div class="section-heading">
+          <p class="section-kicker">Narrative spine</p>
+          <h2>One audience, one question chain, one visual language</h2>
+        </div>
+        <div class="story-grid" id="story-cards"></div>
+      </section>
+
+      <section class="panel panel-question-strip">
+        <div class="question-strip" id="question-strip"></div>
+      </section>
+
+      <section id="visual-1" class="panel visual-panel">
+        <div class="section-heading">
+          <p class="section-kicker">Act 1</p>
+          <h2>Possession is not the same as control</h2>
+          <p>
+            Start with the myth the club believes in. This view shows whether
+            high possession actually leads to wins, with special attention to
+            away matches.
+          </p>
+        </div>
+        <div class="chart-layout">
+          <div class="chart-copy">
+            <h3>Why this flow works</h3>
+            <p>
+              Opening with a tension point creates a reason to keep reading. If
+              possession alone is unreliable, the audience naturally asks what
+              causes the failures and how to respond.
+            </p>
+            <label class="control">
+              <span>Venue filter</span>
+              <select id="venue-filter">
+                <option value="all">All matches</option>
+                <option value="Away">Away only</option>
+                <option value="Home">Home only</option>
+              </select>
+            </label>
+            <div class="legend">
+              <span><i class="swatch swatch-win"></i> Win</span>
+              <span><i class="swatch swatch-draw"></i> Draw</span>
+              <span><i class="swatch swatch-loss"></i> Loss</span>
+            </div>
+          </div>
+          <div class="chart-card">
+            <svg id="chart-possession" viewBox="0 0 740 420" aria-label="Possession chart"></svg>
+            <div class="chart-note" id="possession-summary"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="visual-2" class="panel visual-panel alternate">
+        <div class="section-heading">
+          <p class="section-kicker">Act 2</p>
+          <h2>If the style is fragile, who can sustain it?</h2>
+          <p>
+            Replace the cluttered multi-line design with direct labels and
+            player filtering. This shifts the scouting visual from “many lines”
+            to “decision support.”
+          </p>
+        </div>
+        <div class="chart-layout">
+          <div class="chart-copy">
+            <h3>Design improvement</h3>
+            <p>
+              Peer feedback highlighted ranking ambiguity and overcrowding. This
+              version uses a ranked list with line trends so growth and current
+              value stay visible at the same time.
+            </p>
+            <div id="player-toggles" class="toggle-group"></div>
+          </div>
+          <div class="chart-card">
+            <svg id="chart-scouting" viewBox="0 0 740 420" aria-label="Scouting chart"></svg>
+            <div class="chart-note" id="scouting-summary"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="visual-3" class="panel visual-panel">
+        <div class="section-heading">
+          <p class="section-kicker">Act 3</p>
+          <h2>Which opponents actually shut Barcelona down?</h2>
+          <p>
+            Keep the heatmap, but fix the colour logic and sort the rows to make
+            low-scoring opponents pop out immediately.
+          </p>
+        </div>
+        <div class="chart-layout">
+          <div class="chart-copy">
+            <h3>Design improvement</h3>
+            <p>
+              Low output is encoded with lighter tones and high output with
+              darker, warmer tones, following a more intuitive “more = darker”
+              convention.
+            </p>
+          </div>
+          <div class="chart-card">
+            <svg id="chart-kryptonite" viewBox="0 0 740 420" aria-label="Kryptonite opponents heatmap"></svg>
+            <div class="chart-note" id="kryptonite-summary"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="visual-4" class="panel visual-panel alternate">
+        <div class="section-heading">
+          <p class="section-kicker">Act 4</p>
+          <h2>Where does Barcelona sit among Europe’s elite?</h2>
+          <p>
+            Finish with benchmarking so the audience leaves with positioning and
+            a recommendation, not just isolated findings.
+          </p>
+        </div>
+        <div class="chart-layout">
+          <div class="chart-copy">
+            <h3>Why this should be the final view</h3>
+            <p>
+              A benchmark plot works best as a resolution panel. It answers
+              whether the earlier patterns are unique to Barcelona or common
+              among top clubs.
+            </p>
+          </div>
+          <div class="chart-card">
+            <svg id="chart-benchmark" viewBox="0 0 740 420" aria-label="Benchmark chart"></svg>
+            <div class="chart-note" id="benchmark-summary"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="report-notes" class="panel panel-report">
+        <div class="section-heading">
+          <p class="section-kicker">Report bridge</p>
+          <h2>What to say in the implementation report</h2>
+          <p>
+            Use this section as the bridge between the website and the written
+            report. The detailed draft is included in the project files.
+          </p>
+        </div>
+        <div class="report-cards" id="report-cards"></div>
+      </section>
+    </main>
+
+    <div id="tooltip" class="tooltip" hidden></div>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
