@@ -1,152 +1,154 @@
 # VDS2526 Group 3 — FC Barcelona Data Visualisation
 
-**Students:** Usman Ahmed (2500039), Sefa Kayacan Citak (2505675), Mariona Espi Planet (2512208), Saleh Sami (2502333)
+**Students:** Usman Ahmed (2500039), Sefa Kayacan Citak (2505675), Mariona Espi Planet (2512208), Saleh Sami (2502333)  
+**Dataset:** European Soccer Database (2008–2016) | FC Barcelona | 304 matches
 
-## Dataset
+---
 
-**The dataset is NOT included in this repository.**
-Download the "Football" dataset from Blackboard -> Project folder -> Data folder
-(provided by Prof. Inigo Bermejo, VDS2526 2025/2026).
+## What this project is
 
-It is a CSV export of the European Soccer Database covering 11 European leagues,
-seasons 2008-2016. Our project analyses FC Barcelona (Spain LIGA BBVA).
+We built a four-part interactive data story around FC Barcelona's performance across the 2008–2016 La Liga seasons. The starting question was simple: does dominating possession actually translate into wins? From there, we followed that thread through seasonal efficiency trends, the handful of opponents who consistently gave Barcelona trouble, and finally a comparison against other top clubs in Europe.
 
-Files required — place all CSVs in one folder before running:
+The four acts answer:
 
-| File | Used by |
-|------|---------|
-| Match.csv | Tasks 1, 3, 4 |
-| Match_Possesion.csv | Tasks 1, 4 (note: one 's' in filename) |
-| Team.csv | Tasks 1, 3, 4 |
-| League.csv | Task 4 |
-| Player.csv | Task 2 |
-| Player_Attributes.csv | Task 2 |
+1. Does high possession reliably translate into wins?
+2. How consistently does that control become goals and shots on target?
+3. Which opponents suppressed Barcelona's attack the most?
+4. Where does Barcelona sit relative to Europe's elite clubs?
 
-## Setup
+---
 
-```bash
-pip install pandas numpy matplotlib seaborn plotly
-```
+## Running the project
 
-Python 3.9+ required.
+### Requirements
 
-## How to Run
+- Python 3.8 or later
+- pip
+
+### Steps
 
 ```bash
-# With real dataset (recommended):
-python code/task1_boxplot.py     --data /path/to/csvs --out figures/
-python code/task2_multiline.py   --data /path/to/csvs --out figures/
-python code/task3_heatmap.py     --data /path/to/csvs --out figures/
-python code/task4_scatterplot.py --data /path/to/csvs --out figures/
+# Install dependencies
+pip install pandas plotly numpy
 
-# Without dataset (uses realistic simulated data to test the scripts):
-python code/task1_boxplot.py     --out figures/
-python code/task2_multiline.py   --out figures/
-python code/task3_heatmap.py     --out figures/
-python code/task4_scatterplot.py --out figures/
+# Place the raw CSV files from Blackboard into: VDS2526 Football/
+
+# Build the processed datasets
+python process_data.py
+
+# Generate the four interactive charts
+python build_visualizations.py
+
+# Launch a local server
+python -m http.server 8000
 ```
 
-Each script outputs both an interactive .html and a static .png.
+Then open `http://localhost:8000` in your browser.
 
-## Key Column Mappings
-
-### Match.csv
-- id = match identifier (= match_id in Match_Possesion etc.)
-- home_team_api_id / away_team_api_id -> Team.team_api_id
-- home_team_goal / away_team_goal = full-time goals
-- season = "2008/2009" format
-
-### Match_Possesion.csv
-- match_id -> Match.id
-- homepos = home possession % at this timestamp
-- awaypos = away possession % at this timestamp
-- elapsed = minute (script uses max per match_id for final reading)
-
-### Player_Attributes.csv
-- player_api_id -> Player.player_api_id
-- short_passing, vision = 0-100 FIFA attribute scores
-
-## Interactions (HTML versions)
-| Task | Interaction |
-|------|-------------|
-| 1 Boxplot | Hover any match point -> opponent, date, season |
-| 2 Multi-line | Click legend -> highlight/hide one player |
-| 3 Heatmap | Hover any cell -> opponent, season, avg goals |
-| 4 Scatterplot | Hover -> full team stats; click league name to filter |
-
-## Project Structure
-```
-barca_viz/
-├── code/
-│   ├── task1_boxplot.py       # Task 1: Tactical Reality Check
-│   ├── task2_multiline.py     # Task 2: Scouting for Hidden Gems
-│   ├── task3_heatmap.py       # Task 3: Identifying Kryptonite
-│   └── task4_scatterplot.py   # Task 4: Comparative Benchmarking
-├── figures/                   # generated PNGs + HTMLs go here
-├── generate_figures.py        # generate all static PNGs at once (simulated data)
-└── README.md
-```
-
-# Barcelona Performance Story Prototype
-
-This repository gives you a strong starting point for the Visualisation in Data Science football project. It is designed around the main issue from the peer feedback: your analyses should read like one connected story instead of four isolated tasks.
-
-## Storyline
-
-The proposed narrative flow is:
-
-1. `Act 1`: challenge the assumption that possession guarantees wins.
-2. `Act 2`: move from problem to response by scouting players who support the style.
-3. `Act 3`: identify the opponents that consistently reduce Barcelona's attacking output.
-4. `Act 4`: close with a benchmark against elite European clubs and a recommendation.
-
-This flow gives you:
-
-- a clear introduction
-- a reason to move from one chart to the next
-- a conclusion panel instead of stopping at analysis
+---
 
 ## Project structure
 
-- `index.html`: the narrative structure and all report-facing copy blocks
-- `styles.css`: shared visual language, layout, colour palette, and responsive behaviour
-- `app.js`: SVG rendering logic and lightweight interactions in vanilla JavaScript
-- `data/sample-data.js`: placeholder data so the prototype works immediately
-- `report/implementation-report-draft.md`: a ready-to-adapt draft for the implementation report
+```
+Visualisation-in-DS-Project/
+├── index.html                          # Main page with narrative
+├── app.js                              # Interactivity
+├── styles.css                          # Layout and styling
+│
+├── process_data.py                     # Converts raw CSVs to analysis-ready datasets
+├── build_visualizations.py             # Generates the four Plotly charts
+├── generate_report_stats.py            # Pulls summary statistics for the report
+│
+├── data/
+│   ├── master_matches.csv              # 25,979 matches across all leagues
+│   └── barcelona_matches.csv           # 304 Barcelona matches with derived metrics
+│
+├── charts/
+│   ├── act1_possession_vs_result.html  # Possession scatter by result and venue
+│   ├── act2_control_into_chances.html  # Season-by-season shot and goal trends
+│   ├── act3_kryptonite_heatmap.html    # Goal output against difficult opponents
+│   └── act4_european_benchmark.html    # Benchmarking against elite European clubs
+│
+├── VDS2526 Football/                   # Raw source files from Blackboard
+│   ├── Match.csv
+│   ├── Match_Possesion.csv
+│   ├── Match_Shots_On.csv
+│   ├── Match_Shots_Off.csv
+│   ├── Match_Corner.csv
+│   ├── Match_Cross.csv
+│   ├── Match_Fouls_Committed.csv
+│   ├── Match_Cards.csv
+│   ├── Team.csv
+│   ├── Teams_Datavs.csv
+│   ├── League.csv
+│   ├── Country.csv
+│   └── (other supporting files)
+│
+└── report/
+    └── implementation-report-draft.md
+```
 
-## Recommended design changes
+---
 
-### Keep, but improve
+## Data pipeline
 
-- `Task 1`: keep the possession analysis, but present it as the opening tension instead of a standalone result.
-- `Task 3`: keep the heatmap, but invert the colour logic so higher values are darker and easier to interpret.
-- `Task 4`: keep the benchmark scatterplot as the final view because it resolves the story well.
+The raw dataset covers 25,979 European football matches across 11 leagues from the 2008/2009 to 2015/2016 seasons. It includes match results, possession percentages, shot counts (on and off target), corners, crosses, fouls, cards, and team/player metadata.
 
-### Change
+`process_data.py` merges the relevant CSVs and creates two output files. `master_matches.csv` keeps all 25,979 matches with computed columns. `barcelona_matches.csv` narrows to Barcelona's 304 matches and adds derived fields like result label, venue, shot accuracy, and points.
 
-- `Task 2`: replace the crowded multi-line chart with direct labels and filtering. If your real player set is large, consider either:
-  - a filtered line chart for selected players, or
-  - a ranked table with small sparklines
+`build_visualizations.py` reads those two files and writes four standalone HTML charts using Plotly. The charts can be opened directly in a browser or served via the local server for the full narrative page.
 
-## How to adapt this to your real data
+---
 
-1. Replace the mock arrays in `data/sample-data.js` with your real processed data.
-2. Keep the same field names where possible so the rendering functions need minimal changes.
-3. If your source data is in CSV format, either:
-   - convert it to JSON before loading it, or
-   - add a small CSV parsing helper in `app.js`
-4. Save final screenshots for each visual once the real data is connected.
-5. Copy the text from `report/implementation-report-draft.md` into your course report template and replace the placeholders.
+## Barcelona at a glance (2008–2016)
 
-## Suggested next dataset tasks
+| Metric              | Value            |
+| ------------------- | ---------------- |
+| Total matches       | 304              |
+| Win rate            | 77.0% (234 wins) |
+| Draw rate           | 14.1% (43 draws) |
+| Loss rate           | 8.9% (27 losses) |
+| Average possession  | 66.7%            |
+| Average goals/game  | 2.79             |
+| Shot accuracy       | 39.4%            |
+| Home win rate       | 86.2%            |
+| Away win rate       | 67.8%            |
 
-Before polishing the visuals, prepare these analysis tables:
+A few things stand out in the data. Barcelona won 77% of matches, but still lost 15 games where they had more than 60% possession — possession alone does not close games. The venue gap is also notable: 86% wins at home versus 68% away. The 2011/2012 and 2012/2013 seasons were the peak in terms of goals per game and shot accuracy; later seasons show a slight decline, though the numbers stay elite by any reasonable measure. Against Valencia CF Barcelona averaged only 1.94 goals per game despite usually dominating the ball — Valencia were comfortably the hardest matchup in the dataset.
 
-1. Match-level table with opponent, venue, possession, result, goals for, goals against, and season.
-2. Player development table with player, season, and the exact scouting metric you decide to use.
-3. Opponent summary table with Barcelona goals scored by opponent and season.
-4. Club benchmark table with one row per elite club and the final comparison metrics.
+---
 
-## Important note
+## Design decisions
 
-The current prototype uses sample values because the dataset itself was not in the workspace yet. Once you place the real processed data in the project, we can wire it in and tune each chart to your exact variables.
+**Act 1** uses a scatter plot with individual match circles. We separated them by result (Win / Draw / Loss) on the y-axis and mapped possession to the x-axis so you can immediately see whether high-possession matches cluster only around wins or also appear in losses. Venue (home vs away) is encoded with marker shape. Color follows win-green, draw-amber, loss-red.
+
+**Act 2** is a combined bar and line chart. Bars show average total shots per season, the solid line tracks average goals, and the dotted line tracks shot accuracy on a secondary axis. It answers whether Barcelona's control was consistently converted into attacking output or whether there were seasons where efficiency dropped.
+
+**Act 3** uses a heatmap where rows are the 12 opponents with the lowest average Barcelona goal output and columns are seasons. Darker cells mean fewer Barcelona goals — so the most dangerous opponents appear darkest. This was the main change from earlier peer feedback, which noted the original colour direction was counterintuitive.
+
+**Act 4** is a bubble scatter. X encodes average possession, Y encodes goals per game, and bubble size encodes points per game. Barcelona is marked with a diamond so it stays readable even when other clubs overlap. It serves as the closing comparison and lets us see whether Barcelona's possession-heavy profile actually maps to elite-level outcomes.
+
+---
+
+## What changed after peer feedback
+
+The earlier storyboard presented four separate tasks without a clear throughline. Peer reviewers noted there was no introduction, no explanation of why one chart followed another, and no conclusion. We restructured the whole thing as a four-act narrative and added transition text between each chart explaining what question it answers and why it follows from the previous one. Specific changes:
+
+- Added a hero section and story cards to the landing page
+- Inverted the heatmap colour scale (darker = harder opponent)
+- Act 4 now explicitly functions as the conclusion rather than just another chart
+- Applied direct labeling where possible to reduce legend lookups
+
+---
+
+## Dataset
+
+Source: European Soccer Database (Kaggle)  
+Hugo Mathien. (2016). Soccer. Kaggle.  
+Adapted for VDS2526 by Inigo Bermejo.
+
+25,979 matches | 11 leagues | 8 seasons (2008/2009 – 2015/2016)
+
+---
+
+**Group 3 repository:** https://github.com/salehsami/Visualisation-in-DS-Project

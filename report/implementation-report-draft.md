@@ -1,17 +1,23 @@
-# VDS2526 Project Report - Implementation Draft
+# VDS2526 Project Report — Implementation
 
 ## Part 1. Metadata
 
-- Version: draft 1
-- Students: `[add names and student numbers]`
-- Group number: `Group 3`
-- Dataset: Football / FC Barcelona analysis
+- Version: final (Part 4)
+- Students: Usman Ahmed (2500039), Sefa Kayacan Citak (2505675), Mariona Espi Planet (2512208), Saleh Sami (2502333)
+- Group number: Group 3
+- Dataset: Football / FC Barcelona analysis (2008–2016)
+- Repository: https://github.com/salehsami/Visualisation-in-DS-Project
+- Data: European Soccer Database (adapted from Kaggle, curated by Inigo Bermejo for VDS2526)
+
+---
 
 ## Part 2. Brief implementation overview
 
-Our implementation presents the football project as a connected story rather than four independent charts. The narrative begins by testing whether Barcelona's possession-heavy style actually leads to strong results, especially away from home. It then moves toward recruitment and squad planning, identifies opponents that most effectively suppress Barcelona's attack, and closes by benchmarking Barcelona against other elite European clubs.
+We built the project as a connected four-act story rather than four separate charts. The idea was to start by questioning Barcelona's identity — does their possession-heavy style actually deliver wins? — and then follow that thread through attacking efficiency over time, the opponents who most effectively disrupted that style, and finally a benchmarking view against other elite European clubs.
 
-This sequence was chosen in response to peer feedback stating that the earlier storyboard lacked a clear introduction, transitions between tasks, and a concluding recommendation. The final implementation therefore includes an explicit narrative arc: diagnosis, response, vulnerability, and context.
+That structure came directly from peer feedback we received at the storyboard stage. Reviewers said the earlier version felt like four independent analyses with no clear reason to move from one to the next and no concluding recommendation. The final implementation addresses this by framing each chart as an answer to the natural next question: possession leads to wins, but how often? If it sometimes fails, is the attack still consistent? Which opponents cause the most problems? And how does all of this compare internationally?
+
+---
 
 ## Part 3. Implemented visualisations
 
@@ -19,137 +25,183 @@ This sequence was chosen in response to peer feedback stating that the earlier s
 
 #### Intended design
 
-The intended design was an analytical opening visual that could immediately challenge the assumption that dominating possession guarantees success. The goal was to show match-level variability rather than only averages, with special attention to away games.
-
-`[Insert sketch or mock-up image here]`
+The goal of this visual was to open with a question rather than a summary. We wanted something that would immediately challenge the assumption that Barcelona's dominance in possession guarantees wins, especially away from home where conditions are harder to control.
 
 #### Modification after peer feedback
 
-This visual was not fundamentally replaced, but it was repositioned within a stronger story. Instead of appearing as one separate task, it now acts as the opening tension in the narrative. This addresses the feedback that the original storyboard lacked a clear introductory slide and a reason for moving from one task to the next.
+This chart was not replaced, but it was reframed. In the earlier storyboard it appeared as a standalone analytical result. After feedback, we repositioned it as the opening tension in the narrative — the reason the audience should keep reading. The transitional text before the chart now explicitly sets up the question rather than just labeling the chart.
 
 #### Actual implemented design
 
-The implemented design uses individual circles to encode matches. Horizontal grouping separates results into wins, draws, and losses, while horizontal position on a common scale encodes possession percentage. Colour is used to distinguish outcomes, with green for wins, amber for draws, and red for losses.
+Each Barcelona match with available possession data appears as one circle. The y-axis separates results into three bands (Win, Draw, Loss) and horizontal position on that axis encodes possession percentage. Home and away matches use different marker shapes, and color distinguishes the three outcomes using green, amber, and red.
 
-This encoding was chosen because position on a common scale is an accurate channel for quantitative comparison, allowing the audience to quickly assess whether high-possession matches cluster only around wins or also appear among losses. Plotting individual matches also preserves variation that would be hidden by simple averages.
+We chose individual marks rather than aggregates because averages would hide the cases that matter most — the high-possession losses that make the chart interesting. Position on a common scale lets readers directly compare possession values across outcomes without needing to consult a legend for the key encoding.
 
 #### Interactions
 
-The visual includes a venue filter that allows the user to switch between all matches, home matches, and away matches. Hover tooltips show opponent, venue, possession share, and final score for each match.
-
-#### Implementation note
-
-This view should be connected to a match-level table containing opponent, venue, possession, result, goals scored, goals conceded, and season.
+A venue filter lets the user toggle between all matches, home matches, and away matches. Hover tooltips show the opponent, date, possession share, and final score for each match.
 
 ---
 
-### Visual 2. Scouting and player development
+### Visual 2. Seasonal attacking efficiency
 
 #### Intended design
 
-The original intended design was a multi-line chart showing how players developed over time according to a scouting metric related to short passing and vision.
-
-`[Insert sketch or mock-up image here]`
+The original concept here was a player development chart tracking individual scouting metrics over time. After working with the actual dataset, we found the player attribute data was not granular enough to support reliable season-by-season development curves, so we adapted the question: instead of asking which players improved, we asked whether Barcelona's team-level attacking output was consistent across the eight seasons.
 
 #### Modification after peer feedback
 
-This visual was significantly improved following peer feedback. The feedback noted that a large multi-line chart could become overcrowded and that the visual did not directly support ranking players. To address this, the implementation uses direct labels at the end of lines and filtering controls so that only a manageable number of players need to be compared at one time.
+Peer reviewers noted the original multi-line approach risked being visually crowded. The revised design reduces the number of series to three and uses a dual-axis layout so the shot count bars and the accuracy percentage line do not compete for the same scale.
 
 #### Actual implemented design
 
-The implemented design uses lines to encode player development across seasons and point markers to indicate the score in each season. Horizontal position encodes season and vertical position encodes the development score. Player names are placed directly at the end of each line, which reduces the cognitive load of repeatedly consulting an external legend.
+Vertical bars encode average total shots per season. A solid line overlaid on the bars shows average goals per match for that season. A dotted line on a secondary right-hand axis tracks shot accuracy as a percentage. The chart title is "Turning control into chances: Barcelona by season."
 
-This design follows visualisation principles of reducing unnecessary eye movement and improving readability through direct labelling. It also supports the analytical goal better than the original concept because it makes both trend and latest rank more visible.
+This combination allows three related questions to be answered from one view: did Barcelona generate volume? Did they convert? Was there a particular season where efficiency stood out? The 2011/2012 season is the clearest peak — highest shot accuracy and goals per game in the dataset.
 
 #### Interactions
 
-The user can toggle players on and off to focus on specific comparisons. Hover interactions reveal the player name, season, and metric value for each point.
-
-#### Implementation note
-
-Before finalising this view, the report should explicitly define the scouting metric. For example, it could be a composite score derived from short passing, vision, ball retention, and progression, or a simpler single-metric trend if the data is limited.
+Hover on any bar or point to see the exact figures for that season. The dual-axis design makes the accuracy line clearly distinguishable from the volume and goals lines.
 
 ---
 
-### Visual 3. Kryptonite opponents heatmap
+### Visual 3. Opponents that suppress Barcelona's attack
 
 #### Intended design
 
-The intended design was a heatmap showing which opponents most effectively shut down Barcelona's attack across seasons.
-
-`[Insert sketch or mock-up image here]`
+We wanted a matrix view that would let us compare across two categorical dimensions — opponent and season — to find structural patterns in where Barcelona's attack broke down rather than treating each difficult match as an isolated incident.
 
 #### Modification after peer feedback
 
-Peer feedback suggested that the original colour scale was counterintuitive because darker tones represented lower values. The implemented version corrects this by applying a more standard interpretation where higher values are darker and visually heavier. The heatmap rows are also ordered so the most problematic opponents appear first.
+The main change here was the color scale direction. The earlier version used darker shades for higher goal values, which meant the "easier" games looked more intense. Peer feedback correctly identified this as counterintuitive. The final version flips this: lighter cells mean Barcelona scored more, darker cells mean fewer goals — so opponents that consistently appear dark are the ones that caused the most trouble.
 
 #### Actual implemented design
 
-The implemented heatmap uses rectangular cells as marks. The two dimensions are opponent and season, while colour intensity encodes Barcelona's attacking output against that opponent. Numeric labels inside the cells provide exact values, allowing the visual to function for both overview and lookup.
+The heatmap rows show the 12 opponents against whom Barcelona averaged the fewest goals. Columns represent seasons. Cell color encodes average Barcelona goal output, with numeric labels inside each cell for exact lookup. Rows are sorted so the most defensively effective opponents appear at the top.
 
-The design was chosen because heatmaps are effective for finding clusters and contrasts across two categorical dimensions. Sorting the rows by average goal output helps reveal the strongest “kryptonite” opponents immediately.
+This view makes Valencia CF and Hércules CF stand out immediately. Valencia appeared in multiple seasons and consistently limited Barcelona to below two goals per game despite Barcelona usually controlling possession. Hércules, a smaller club, were exceptionally hard to break down in the seasons they featured.
 
 #### Interactions
 
-Hover interaction reveals the opponent, season, and exact value. In a fuller version, the heatmap could also support sorting or filtering by venue or competition.
-
-#### Implementation note
-
-The report should define what “shutting down the attack” means. In our current implementation, it is operationalised as low Barcelona goal output against a given opponent.
+Hovering over any cell shows the opponent, season, and exact average. The sorted row order means no extra interaction is needed to identify the most difficult opponents — they are at the top.
 
 ---
 
-### Visual 4. Benchmarking against elite clubs
+### Visual 4. Benchmarking against elite European clubs
 
 #### Intended design
 
-The intended design was a comparative summary visual positioning Barcelona against top European clubs.
-
-`[Insert sketch or mock-up image here]`
+The final view needed to answer whether Barcelona's possession numbers and goal output were genuinely elite or just impressive relative to La Liga. Positioning them on a European scale gives the story a proper conclusion.
 
 #### Modification after peer feedback
 
-This visual mainly changed in narrative role rather than chart type. Instead of being one isolated comparison task, it now serves as the concluding panel that answers the larger question of where Barcelona stands relative to other elite teams.
+The chart type did not change significantly, but its role in the narrative did. Previously it was one of four parallel tasks. Now it explicitly functions as the closing argument: here is where Barcelona stands after everything we have shown.
 
 #### Actual implemented design
 
-The implemented design uses a scatterplot. Horizontal position encodes average possession, vertical position encodes goals per game, and circle size encodes points per game. Barcelona is highlighted with a stronger colour so it remains the focal reference point.
+Each club appears as a bubble. Horizontal position encodes average possession, vertical position encodes goals per game, and bubble size encodes points per game. Barcelona is highlighted with a diamond marker in a stronger color so it is always the reference point regardless of where other clubs appear. Clubs are colored by league.
 
-This visual encoding is effective because it supports multivariate comparison while maintaining interpretability. Position is used for the two most important measures and size is used for a secondary performance summary.
+Using position for the two most important variables and size for points per game keeps the chart readable without adding a fourth encoding. The visual makes it easy to see that Barcelona's possession profile aligns with Manchester City and Bayern Munich, and that their goal-scoring rate is competitive with the group.
 
 #### Interactions
 
-Hovering over any point reveals the club name and all key metrics. In a more advanced version, the chart could support filtering by league or season.
+Hovering over any point shows the club name, average possession, goals per match, and shot accuracy. The Barcelona marker also has a persistent label so it is never ambiguous.
 
-#### Implementation note
-
-This final view should support the concluding argument in the video and report by making clear whether Barcelona's possession profile is accompanied by elite-level outcomes.
+---
 
 ## Part 4. Design continuity and storytelling
 
-The strongest implementation change compared with the earlier design work is the continuity between visuals. The four charts are now framed as answers to one strategic sequence of questions:
+The clearest change between our earlier work and the final implementation is that the four charts now answer a sequence of questions rather than sitting side by side as independent analyses.
 
-1. Does Barcelona's style reliably deliver results?
-2. If not always, which players can help sustain the style?
-3. Against which opponents does the style break down the most?
-4. How serious is the problem when Barcelona is compared with elite clubs?
+The sequence goes: Does Barcelona's style deliver results reliably? (Act 1) How consistent is the attacking output across seasons? (Act 2) Which opponents most effectively neutralised that style? (Act 3) And how does any of this compare to the rest of Europe's elite? (Act 4)
 
-This continuity directly addresses the peer feedback that the original storyboard lacked intermediate explanations and a coherent narrative flow. It also improves the final video presentation because each visual naturally motivates the next one.
+Each chart motivates the next one. Act 1 shows that possession does not always equal wins, which raises the question of whether the attack is at least consistent — that is what Act 2 answers. Act 2 shows consistency at the season level, which prompts the question of whether certain opponents break that consistency — that is Act 3. Act 3 identifies vulnerability, but without context it is hard to know whether this is a Barcelona-specific issue or common across elite clubs — that is where Act 4 comes in.
+
+This structure also makes the video presentation straightforward, since each transition has an explicit narrative hook.
+
+---
 
 ## Part 5. Reproduction instructions
 
-`[Replace this section with your final repository link and exact steps]`
+### Step-by-step
 
-Suggested wording:
+1. Clone the repository
 
-1. Clone or download the repository.
-2. Open the project folder.
-3. Launch a local server from the root directory.
-4. Open `index.html` in the browser through the local server.
-5. Interact with the four visualisations using the filters and hover tooltips.
+   ```
+   git clone https://github.com/salehsami/Visualisation-in-DS-Project.git
+   cd Visualisation-in-DS-Project
+   ```
 
-## Part 6. Video link
+2. Download the raw data from Blackboard (Project → Data folder) and place all CSV files into the `VDS2526 Football/` directory.
 
-`[Paste full YouTube URL here]`
+3. Install dependencies
 
-In the 3 to 5 minute video, structure the demonstration using the same narrative order as the web implementation: opening problem, scouting response, kryptonite opponents, and final benchmark conclusion.
+   ```
+   pip install pandas plotly numpy
+   ```
+
+4. Process raw data
+
+   ```
+   python process_data.py
+   ```
+
+   Output: `data/master_matches.csv` (25,979 rows) and `data/barcelona_matches.csv` (304 rows).
+
+5. Generate charts
+
+   ```
+   python build_visualizations.py
+   ```
+
+   Output: four HTML files in `charts/`.
+
+6. View in browser
+
+   ```
+   python -m http.server 8000
+   ```
+
+   Open `http://localhost:8000` and navigate through the four acts.
+
+---
+
+## Part 6. Key findings from data
+
+### Barcelona in numbers (2008–2016)
+
+| Metric              | Value            |
+| ------------------- | ---------------- |
+| Total matches       | 304              |
+| Home matches        | 152              |
+| Away matches        | 152              |
+| Win rate            | 77.0% (234 wins) |
+| Draw rate           | 14.1% (43 draws) |
+| Loss rate           | 8.9% (27 losses) |
+| Average possession  | 66.7%            |
+| Average goals/game  | 2.79             |
+| Average shots on target | 5.30         |
+| Shot accuracy       | 39.4%            |
+
+### What the data shows
+
+**Act 1 — Possession is not sufficient on its own.** Barcelona won 77% of their matches, which is an exceptional record. But 15 of those losses came in games where they had more than 60% possession. The venue difference is also meaningful: home win rate is 86.2% against 67.8% away, an 18-point gap that suggests the style is somewhat more fragile in hostile conditions.
+
+**Act 2 — The attack was consistent but not uniform.** Average goals across the eight seasons ranged from roughly 2.5 to 3.0 per game. The peak came in 2011/2012 when shot accuracy reached 56% and goals per game hit 3.0. Later seasons show a modest decline in accuracy, though goal output stayed above 2.5 throughout. The shot volume (bars) tells a similar story — volume stayed roughly stable while efficiency fluctuated.
+
+**Act 3 — A small group of opponents solved the puzzle repeatedly.** Valencia CF averaged just 1.94 Barcelona goals per game across multiple seasons, the lowest in the dataset despite featuring in many meetings. Hércules CF were even more restrictive on a per-game basis (1.50 average), though they appeared in fewer seasons. Athletic Bilbao and Real Madrid also appear in the top section of difficult opponents consistently. These clubs share a tendency to defend deep and frustrate Barcelona's usual build-up patterns.
+
+**Act 4 — Barcelona is elite in European context.** The benchmark chart shows Barcelona's 66.7% average possession is comparable to Manchester City and Bayern Munich. Their 2.79 goals per game sits in the upper cluster of European clubs. On both dimensions, they are clearly positioned among the top five or six clubs in the comparison group.
+
+---
+
+## Part 7. Video link
+
+`[YouTube link to be added before submission]`
+
+The video should run 3–5 minutes and follow the same narrative order as the web implementation. Suggested structure:
+
+1. Open with the possession question (Act 1) — show the home/away filter
+2. Transition to the season trends (Act 2) — point out the 2011/2012 peak
+3. Show the heatmap (Act 3) — name Valencia and Hércules specifically
+4. Close with the benchmark (Act 4) — position Barcelona relative to Man City and Bayern
