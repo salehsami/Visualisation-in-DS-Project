@@ -7,9 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    
     <link rel="stylesheet" href="./styles-2.css" />
   </head>
   <body>
@@ -19,7 +17,7 @@
         <a href="#build-notes" class="report-link"><i class="fa-solid fa-code"></i> Build notes</a>
       </nav>
       <div class="hero-copy">
-        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/47/FC_Barcelona_%28crest%29.svg/200px-FC_Barcelona_%28crest%29.svg.png" alt="FC Barcelona Crest" class="barca-logo" />
+        <img src="./barca-logo.png" alt="FC Barcelona Crest" class="barca-logo" />
         
         <p class="kicker"><i class="fa-solid fa-futbol"></i> FC Barcelona Performance Story</p>
         <h1>From possession to pressure points</h1>
@@ -119,7 +117,7 @@
             <button class="slider-btn prev-btn"><i class="fa-solid fa-chevron-left"></i></button>
             <button class="slider-btn next-btn"><i class="fa-solid fa-chevron-right"></i></button>
           </div>
-          </div>
+        </div>
       </section>
 
       <section id="visual-2" class="panel visual-panel alternate">
@@ -214,30 +212,18 @@
         const prevBtn = document.querySelector('.prev-btn');
         const nextBtn = document.querySelector('.next-btn');
         let currentSlide = 0;
+        
         if (slides.length > 0 && prevBtn && nextBtn) {
           function showSlide(index) {
-            slides.forEach(slide => {
-              slide.classList.remove('active');
-            });
-            
-            if (index >= slides.length) {
-              currentSlide = 0;
-            } else if (index < 0) {
-              currentSlide = slides.length - 1;
-            } else {
-              currentSlide = index;
-            }
-            
+            slides.forEach(slide => slide.classList.remove('active'));
+            if (index >= slides.length) currentSlide = 0;
+            else if (index < 0) currentSlide = slides.length - 1;
+            else currentSlide = index;
             slides[currentSlide].classList.add('active');
           }
 
-          nextBtn.addEventListener('click', () => {
-            showSlide(currentSlide + 1);
-          });
-
-          prevBtn.addEventListener('click', () => {
-            showSlide(currentSlide - 1);
-          });
+          nextBtn.addEventListener('click', () => showSlide(currentSlide + 1));
+          prevBtn.addEventListener('click', () => showSlide(currentSlide - 1));
         }
       });
     </script>
