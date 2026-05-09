@@ -3,7 +3,7 @@
   --barca-blue: #004d98;
   --barca-red: #a50044;
   --barca-yellow: #edbb00;
-  --bg-dark: #12151c; /* Stadyum gecesi karanlığı */
+  --bg-dark: #12151c; 
   --panel-bg: #1e222b;
   --text-main: #f8f9fa;
   --text-muted: #a0aec0;
@@ -250,3 +250,60 @@ h1, h2, h3 {
     font-size: 2.5rem;
   }
 }
+
+.slider-container {
+  position: relative;
+  overflow: hidden; 
+  padding: 1rem;
+}
+
+.slider-wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.slide {
+  min-width: 100%;
+  opacity: 0;
+  display: none;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.slide.active {
+  opacity: 1;
+  display: block;
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.slider-btn {
+  position: absolute;
+  top: 45%;
+  transform: translateY(-50%);
+  background-color: var(--barca-blue);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.slider-btn:hover {
+  background-color: var(--barca-red);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.prev-btn { left: 15px; }
+.next-btn { right: 15px; }
