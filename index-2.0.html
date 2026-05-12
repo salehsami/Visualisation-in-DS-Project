@@ -14,21 +14,22 @@
     <header class="hero">
       <nav class="topbar">
         <span class="eyebrow"><i class="fa-solid fa-chart-line"></i> Visualisation in Data Science</span>
-        <a href="#build-notes" class="report-link"><i class="fa-solid fa-code"></i> Build notes</a>
+        <a href="#build-notes" class="report-link">Build notes</a>
       </nav>
       <div class="hero-copy">
         <img src="./barca-logo.png" alt="FC Barcelona Crest" class="barca-logo" />
         
-        <p class="kicker"><i class="fa-solid fa-futbol"></i> FC Barcelona Performance Story</p>
+        <p class="kicker">FC Barcelona Performance Story</p>
         <h1>From possession to pressure points</h1>
         <p class="lede">
-          This page uses Python-generated visualizations built from real
-          dataset. The storyline moves from tactical myth, to attacking conversion, 
-          to difficult opponents, and finishes with a European benchmark.
+          This page uses Python-generated visualizations built from the real
+          datasets. The storyline moves from tactical myth, to attacking
+          conversion, to difficult opponents, and finishes with a European
+          benchmark.
         </p>
         <div class="hero-actions">
-          <a href="#storyline" class="button button-primary"><i class="fa-solid fa-play"></i> See the story arc</a>
-          <a href="#visual-1" class="button button-secondary"><i class="fa-solid fa-chart-pie"></i> Jump to charts</a>
+          <a href="#storyline" class="button button-primary">See the story arc</a>
+          <a href="#visual-1" class="button button-secondary">Jump to charts</a>
         </div>
       </div>
     </header>
@@ -36,7 +37,7 @@
     <main>
       <section id="storyline" class="panel panel-story">
         <div class="section-heading">
-          <p class="section-kicker"><i class="fa-solid fa-book-open"></i> Narrative spine</p>
+          <p class="section-kicker">Narrative spine</p>
           <h2>One football question leads to the next</h2>
         </div>
         <div class="story-grid">
@@ -47,8 +48,8 @@
           </article>
           <article class="story-card">
             <span class="step"><i class="fa-solid fa-bullseye"></i></span>
-            <h3>Look at conversion</h3>
-            <p>If control is not enough, the next question is whether Barcelona turn territorial dominance into a steady stream of goals.</p>
+            <h3>Scout the hidden gems</h3>
+            <p>If control is not enough, the next question is which younger Barcelona players show the clearest growth in the key skills that support the style.</p>
           </article>
           <article class="story-card">
             <span class="step"><i class="fa-solid fa-fire"></i></span>
@@ -72,7 +73,7 @@
           </a>
           <a href="#visual-2" class="question-pill">
             <strong>Q2</strong>
-            <span>Does control become attacking output?</span>
+            <span>Which players are improving in key playmaking skills?</span>
             <i class="fa-solid fa-arrow-right pill-icon"></i>
           </a>
           <a href="#visual-3" class="question-pill">
@@ -95,46 +96,33 @@
         </div>
         <div class="chart-layout">
           <div class="chart-copy">
-            <h3><i class="fa-solid fa-lightbulb"></i> Story function</h3>
-            <p>This opening view creates tension. If Barcelona can lose despite overwhelming possession, the audience immediately needs an explanation for where that control breaks down. Swipe to see the detailed distribution.</p>
+            <h3>Story function</h3>
+            <p>This opening view creates tension. If Barcelona can lose despite overwhelming possession, the audience immediately needs an explanation for where that control breaks down.</p>
           </div>
-          
-          <div class="chart-card slider-container">
-            <div class="slider-wrapper">
-              
-              <div class="slide active">
-                <iframe class="chart-frame" src="./charts/act1_possession_vs_result.html" title="Act 1 possession versus result" loading="lazy"></iframe>
-                <div class="chart-note"><i class="fa-solid fa-circle-info"></i> Notice how losses still occur with high possession shares.</div>
-              </div>
-              
-              <div class="slide">
-                <iframe class="chart-frame" src="./charts/act1_boxplot.html" title="Act 1 Boxplot" loading="lazy"></iframe>
-                <div class="chart-note"><i class="fa-solid fa-chart-simple"></i> Boxplot: Distribution of possession rates across Match Outcomes.</div>
-              </div>
-
-            </div>
-
-            <button class="slider-btn prev-btn"><i class="fa-solid fa-chevron-left"></i></button>
-            <button class="slider-btn next-btn"><i class="fa-solid fa-chevron-right"></i></button>
+          <div class="chart-card">
+            <iframe class="chart-frame" src="./charts/act1_boxplot.html" title="Act 1 boxplot" loading="lazy"></iframe>
+            <div class="chart-note">The boxplot shows that Barcelona still recorded very high possession in several matches they failed to win, especially away from home.</div>
           </div>
         </div>
+        <p class="transition-note">If possession alone does not secure results, the next question is whether Barcelona at least convert control into a steady attacking output.</p>
       </section>
 
-      <section id="visual-2" class="panel visual-panel alternate">
+      <section id="visual-2" class="panel visual-panel">
         <div class="section-heading">
           <p class="section-kicker">Act 2</p>
-          <h2>Control must become chances</h2>
+          <h2>Scouting for hidden gems</h2>
         </div>
         <div class="chart-layout">
           <div class="chart-copy">
-            <h3>Why this revision helps</h3>
-            <p>It keeps the story coherent with the data currently prepared. The chart links possession, shot volume, and finishing efficiency, so the audience can see whether control turns into real attacking value.</p>
+            <h3>Story function</h3>
+            <p>This scouting view now uses only Barcelona players and shows all available seasons for the shortlisted under-25 profiles. Players are shortlisted from the ones whose short passing and vision improve over their latest three-season window, then their full Barcelona progression is shown in the chart.</p>
           </div>
           <div class="chart-card">
-            <iframe class="chart-frame" src="./charts/act2_control_into_chances.html" title="Act 2 control into chances" loading="lazy"></iframe>
-            <div class="chart-note">The most useful seasons are the ones where possession, shot creation, and goal output rise together rather than moving in isolation.</div>
+            <iframe class="chart-frame" src="./charts/act2_control_into_chances.html" title="Act 2 scouting for hidden gems" loading="lazy"></iframe>
+            <div class="chart-note">Each player keeps one color across the chart, while solid lines show short passing and dashed lines show vision. The Plotly toolbar lets you zoom, reset axes, autoscale, and inspect the lines directly.</div>
           </div>
         </div>
+        <p class="transition-note">Once the most promising technical profiles are visible, the next step is to understand which opponents most consistently expose the team’s broader attacking weaknesses.</p>
       </section>
 
       <section id="visual-3" class="panel visual-panel">
@@ -145,16 +133,19 @@
         <div class="chart-layout">
           <div class="chart-copy">
             <h3>Story function</h3>
-            <p>After identifying a general tactical weakness, this view names the opponents who exploit it. That makes the story more actionable for coaching and preparation.</p>
+            <p>This heatmap shows how many goals Barcelona scored on average against each opponent in each season. Each row is one opponent, each column is one season, and each cell combines both the number and the color for the same value.</p>
+            <p>Lighter cells mean Barcelona scored fewer goals per match on average, so they point to harder attacking matchups. Darker cells mean Barcelona scored more freely. Because the values are averages, numbers like 1.50 or 3.50 appear when Barcelona played the same opponent more than once in a season.</p>
+            <p>To keep the view readable, the chart focuses on the 12 recurring opponents against whom Barcelona scored the least on average across the period. That makes the “kryptonite” pattern easier to see than if every team were included.</p>
           </div>
           <div class="chart-card">
             <iframe class="chart-frame" src="./charts/act3_kryptonite_heatmap.html" title="Act 3 kryptonite opponents" loading="lazy"></iframe>
-            <div class="chart-note">Lower goal output appears at the top because the heatmap is sorted by Barcelona’s average goals scored against each opponent.</div>
+            <div class="chart-note">Only recurring opponents are considered, and the final heatmap keeps the 12 toughest ones by Barcelona’s average goal output. That smaller set is easier to read and better supports the storytelling goal.</div>
           </div>
         </div>
+        <p class="transition-note">Once the most difficult opponents are visible, the last question is whether this weakness is unusual or just part of how elite clubs perform against strong resistance.</p>
       </section>
 
-      <section id="visual-4" class="panel visual-panel alternate">
+      <section id="visual-4" class="panel visual-panel">
         <div class="section-heading">
           <p class="section-kicker">Act 4</p>
           <h2>Where does Barcelona sit among Europe’s elite?</h2>
@@ -162,12 +153,47 @@
         <div class="chart-layout">
           <div class="chart-copy">
             <h3>Story function</h3>
-            <p>A benchmark works well as the closing panel because it turns the earlier diagnosis into context: is this a Barcelona problem, or a broader trait of top clubs?</p>
+            <p>This final benchmark reconstructs season standings from match results, keeps only the five major leagues, and then selects the three strongest long-run representatives from each league for comparison with Barcelona.</p>
           </div>
           <div class="chart-card">
             <iframe class="chart-frame" src="./charts/act4_european_benchmark.html" title="Act 4 European benchmark" loading="lazy"></iframe>
-            <div class="chart-note">Position represents the two main measures, while bubble size adds a compact signal for points per match.</div>
+            <div class="chart-note">Position shows possession and goals per match, while bubble size adds points per match. The comparison group is data-driven and restricted to the top 3 teams from each major league.</div>
           </div>
+        </div>
+      </section>
+
+      <section id="conclusion" class="panel panel-conclusion">
+        <div class="section-heading">
+          <p class="section-kicker">Conclusion</p>
+          <h2>What the story suggests</h2>
+          <p>
+            The four acts point to a consistent message: Barcelona often control
+            games territorially, but the most important competitive difference is
+            whether that control becomes efficient attack against strong
+            opponents.
+          </p>
+        </div>
+        <div class="conclusion-grid">
+          <article class="report-card">
+            <span class="step">1</span>
+            <h3>Main finding</h3>
+            <p>High possession is part of Barcelona’s identity, but it is not a guarantee of positive results by itself.</p>
+          </article>
+          <article class="report-card">
+            <span class="step">2</span>
+            <h3>Main finding</h3>
+            <p>The strongest seasons are the ones where shot volume, goal output, and accuracy rise together instead of relying on control alone.</p>
+          </article>
+          <article class="report-card">
+            <span class="step">3</span>
+            <h3>Main finding</h3>
+            <p>A small set of opponents consistently reduce Barcelona’s scoring output, which suggests specific matchup vulnerabilities rather than random fluctuation.</p>
+          </article>
+          <article class="report-card">
+            <span class="step">4</span>
+            <h3>Recommendation</h3>
+            <p>Future tactical analysis should focus less on possession totals alone and more on how quickly possession turns into shots, entries, and goals.</p>
+          </article>
         </div>
       </section>
 
@@ -205,27 +231,5 @@
         </div>
       </section>
     </main>
-
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const slides = document.querySelectorAll('.slide');
-        const prevBtn = document.querySelector('.prev-btn');
-        const nextBtn = document.querySelector('.next-btn');
-        let currentSlide = 0;
-        
-        if (slides.length > 0 && prevBtn && nextBtn) {
-          function showSlide(index) {
-            slides.forEach(slide => slide.classList.remove('active'));
-            if (index >= slides.length) currentSlide = 0;
-            else if (index < 0) currentSlide = slides.length - 1;
-            else currentSlide = index;
-            slides[currentSlide].classList.add('active');
-          }
-
-          nextBtn.addEventListener('click', () => showSlide(currentSlide + 1));
-          prevBtn.addEventListener('click', () => showSlide(currentSlide - 1));
-        }
-      });
-    </script>
   </body>
 </html>
