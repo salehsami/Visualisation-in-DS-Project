@@ -560,45 +560,57 @@ def build_act4(master: pd.DataFrame) -> None:
     benchmark["label_name"] = benchmark["team_name"]
     benchmark.loc[benchmark["team_name"] == "FC Barcelona", "label_name"] = ""
 
+    # 1. TOP LAYER (ELITE TEAMS): Bubble Chart
     fig = px.scatter(
         benchmark,
         x="avg_possession",
         y="goals_per_match",
-        size="points_per_match",
+        size="points_per_match", 
         color="league_name",
         text="label_name",
         hover_name="team_name",
         hover_data=["avg_shot_accuracy", "seasons_observed", "top3_finishes", "avg_rank"],
         title="Task 4: Barcelona against top-3 teams vs Rest of Europe",
+        size_max=18 
     )
     
     fig.update_traces(
         textposition="top center",
         textfont=dict(size=10),
-        marker=dict(line=dict(width=1, color="white"), opacity=0.85, sizeref=0.016),
-        zorder=2 
+        marker_line_width=1.5,
+        marker_line_color="white",
+        opacity=0.85
     )
 
+    elite_traces = list(fig.data)
+    fig.data = []
+
+    # 2. BOTTOM LAYER (BACKGROUND): All European Teams
     try:
-        all_teams = master.groupby("home_team_api_id").agg(
-            avg_possession=("homepos", "mean"), 
+        all_teams = master.groupby("home_team_name").agg(
+            avg_possession=("home_possession", "mean"), 
             goals_per_match=("home_team_goal", "mean") 
         ).reset_index()
+
+        all_teams = all_teams.dropna(subset=["avg_possession", "goals_per_match"])
 
         fig.add_trace(
             go.Scatter(
                 x=all_teams["avg_possession"],
                 y=all_teams["goals_per_match"],
                 mode="markers",
-                marker=dict(size=6, color="lightgrey", opacity=0.3),
+                marker=dict(size=6, color="lightgrey", opacity=0.4),
                 name="All European Teams",
                 hoverinfo="skip", 
-                zorder=1 
             )
         )
     except KeyError as e:
-        print(f"Background layer could not be drawn, please check column names: {e}")
+        print(f"Background layer could not be drawn, check columns: {e}")
 
+    for trace in elite_traces:
+        fig.add_trace(trace)
+
+    # 3. FOCUS POINT: FC Barcelona Highlight
     barca_mask = benchmark["team_name"] == "FC Barcelona"
     fig.add_trace(
         go.Scatter(
@@ -610,10 +622,10 @@ def build_act4(master: pd.DataFrame) -> None:
             marker=dict(size=20, color="#912f40", symbol="diamond", line=dict(width=2, color="#ffffff")),
             name="Barcelona highlight",
             hovertemplate="FC Barcelona<br>Avg possession=%{x:.2f}<br>Goals per match=%{y:.2f}<extra></extra>",
-            zorder=3 
         )
     )
 
+    # 4. VISUAL ADJUSTMENTS
     fig.update_layout(
         xaxis_title="Average possession (%)",
         yaxis_title="Goals per match",
