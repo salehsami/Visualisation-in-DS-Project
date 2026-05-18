@@ -508,6 +508,53 @@ def build_task4_elite_dataset(master: pd.DataFrame) -> pd.DataFrame:
     return benchmark
 
 
+# def build_act4(master: pd.DataFrame) -> None:
+#     benchmark = build_task4_elite_dataset(master)
+#     benchmark["label_name"] = benchmark["team_name"]
+#     benchmark.loc[benchmark["team_name"] == "FC Barcelona", "label_name"] = ""
+
+#     fig = px.scatter(
+#         benchmark,
+#         x="avg_possession",
+#         y="goals_per_match",
+#         size="points_per_match",
+#         color="league_name",
+#         text="label_name",
+#         hover_name="team_name",
+#         hover_data=["avg_shot_accuracy", "seasons_observed", "top3_finishes", "avg_rank"],
+#         title="Task 4: Barcelona against top-3 teams from Europe's major leagues",
+#     )
+#     fig.update_traces(
+#         textposition="top center",
+#         textfont=dict(size=10),
+#         marker=dict(line=dict(width=1, color="white"), opacity=0.72, sizeref=0.016),
+#     )
+#     barca_mask = benchmark["team_name"] == "FC Barcelona"
+#     fig.add_trace(
+#         go.Scatter(
+#             x=benchmark.loc[barca_mask, "avg_possession"],
+#             y=benchmark.loc[barca_mask, "goals_per_match"],
+#             mode="markers+text",
+#             text=benchmark.loc[barca_mask, "team_name"],
+#             textposition="bottom center",
+#             marker=dict(size=20, color="#912f40", symbol="diamond", line=dict(width=2, color="#ffffff")),
+#             name="Barcelona highlight",
+#             hovertemplate="FC Barcelona<br>Avg possession=%{x:.2f}<br>Goals per match=%{y:.2f}<extra></extra>",
+#         )
+#     )
+#     fig.update_layout(
+#         xaxis_title="Average possession (%)",
+#         yaxis_title="Goals per match",
+#         legend_title="League",
+#         legend=dict(
+#             orientation="v",
+#             yanchor="top",
+#             y=1,
+#             xanchor="left",
+#             x=1.02,
+#         ),
+#     )
+#     write_chart(fig, "act4_european_benchmark.html")
 def build_act4(master: pd.DataFrame) -> None:
     benchmark = build_task4_elite_dataset(master)
     benchmark["label_name"] = benchmark["team_name"]
@@ -522,13 +569,36 @@ def build_act4(master: pd.DataFrame) -> None:
         text="label_name",
         hover_name="team_name",
         hover_data=["avg_shot_accuracy", "seasons_observed", "top3_finishes", "avg_rank"],
-        title="Task 4: Barcelona against top-3 teams from Europe's major leagues",
+        title="Task 4: Barcelona against top-3 teams vs Rest of Europe",
     )
+    
     fig.update_traces(
         textposition="top center",
         textfont=dict(size=10),
-        marker=dict(line=dict(width=1, color="white"), opacity=0.72, sizeref=0.016),
+        marker=dict(line=dict(width=1, color="white"), opacity=0.85, sizeref=0.016),
+        zorder=2 
     )
+
+    try:
+        all_teams = master.groupby("home_team_api_id").agg(
+            avg_possession=("homepos", "mean"), 
+            goals_per_match=("home_team_goal", "mean") 
+        ).reset_index()
+
+        fig.add_trace(
+            go.Scatter(
+                x=all_teams["avg_possession"],
+                y=all_teams["goals_per_match"],
+                mode="markers",
+                marker=dict(size=6, color="lightgrey", opacity=0.3),
+                name="All European Teams",
+                hoverinfo="skip", 
+                zorder=1 
+            )
+        )
+    except KeyError as e:
+        print(f"Background layer could not be drawn, please check column names: {e}")
+
     barca_mask = benchmark["team_name"] == "FC Barcelona"
     fig.add_trace(
         go.Scatter(
@@ -540,12 +610,15 @@ def build_act4(master: pd.DataFrame) -> None:
             marker=dict(size=20, color="#912f40", symbol="diamond", line=dict(width=2, color="#ffffff")),
             name="Barcelona highlight",
             hovertemplate="FC Barcelona<br>Avg possession=%{x:.2f}<br>Goals per match=%{y:.2f}<extra></extra>",
+            zorder=3 
         )
     )
+
     fig.update_layout(
         xaxis_title="Average possession (%)",
         yaxis_title="Goals per match",
-        legend_title="League",
+        legend_title="Legend",
+        plot_bgcolor="#f4f4f9", 
         legend=dict(
             orientation="v",
             yanchor="top",
@@ -554,6 +627,7 @@ def build_act4(master: pd.DataFrame) -> None:
             x=1.02,
         ),
     )
+    
     write_chart(fig, "act4_european_benchmark.html")
 
 
