@@ -2,6 +2,10 @@
 """Generate statistics from Barcelona match data for the final report."""
 
 import pandas as pd
+import pandas as pd
+import plotly.express as px
+import os
+
 
 barca = pd.read_csv("data/barcelona_matches.csv")
 
@@ -88,3 +92,63 @@ print(f'Home avg goals: {home["barca_goals"].mean():.2f}')
 print(f'Away avg goals: {away["barca_goals"].mean():.2f}')
 print(f'Home avg possession: {home["barca_possession"].mean():.1f}%')
 print(f'Away avg possession: {away["barca_possession"].mean():.1f}%')
+
+os.makedirs("charts", exist_ok=True)
+
+barca = pd.read_csv("data/barcelona_matches.csv")
+
+season_goals = barca.groupby("season")["barca_goals"].sum().reset_index()
+
+fig1 = px.bar(
+    season_goals,
+    x="season",
+    y="barca_goals",
+    color="barca_goals",
+    color_continuous_scale="Blues",
+    title="FC Barcelona: Total Goals Scored Per Season",
+    labels={"season": "Season", "barca_goals": "Total Goals"}
+)
+
+fig1.update_layout(
+    xaxis_title="Season",
+    yaxis_title="Total Goals",
+    title_font=dict(size=18, family="Arial"),
+    plot_bgcolor="white",
+    xaxis_tickangle=-45,
+    margin=dict(t=70, b=50, l=50, r=30)
+)
+
+fig1.write_html("charts/eda_total_goals_bar.html")
+print("Saved: charts/eda_total_goals_bar.html")
+
+possession_data = barca[barca["has_possession_data"] == True].copy()
+
+outcome_order = ["Win", "Draw", "Loss"]
+outcome_colors = {"Win": "#2ecc71", "Draw": "#f1c40f", "Loss": "#e74c3c"}
+
+fig2 = px.histogram(
+    possession_data,
+    x="barca_possession",
+    color="barca_result",
+    color_discrete_map=outcome_colors,
+    barmode="stack",
+    nbins=20,
+    title="Distribution of Ball Possession by Match Outcome",
+    labels={"barca_possession": "Ball Possession (%)", "barca_result": "Match Outcome"},
+    category_orders={"barca_result": outcome_order}
+)
+
+fig2.update_traces(
+    marker=dict(line=dict(width=1, color="white"))
+)
+
+fig2.update_layout(
+    xaxis_title="Ball Possession (%)",
+    yaxis_title="Frequency (Number of Matches)",
+    title_font=dict(size=18, family="Arial"),
+    plot_bgcolor="#f8f9fa",
+    margin=dict(t=70, b=50, l=50, r=30)
+)
+
+fig2.write_html("charts/eda_possession_hist.html")
+print("Saved: charts/eda_possession_hist.html")
