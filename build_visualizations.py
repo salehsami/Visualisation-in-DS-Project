@@ -5,7 +5,6 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.colors import qualitative
-from plotly.subplots import make_subplots
 
 
 ROOT = Path(__file__).resolve().parent
@@ -16,6 +15,9 @@ CHARTS.mkdir(parents=True, exist_ok=True)
 
 MASTER_PATH = DATA / "master_matches.csv"
 BARCA_PATH = DATA / "barcelona_matches.csv"
+CHART_BG = "#eceff1"
+GRID_COLOR = "#cfd5db"
+AXIS_COLOR = "#c1c8cf"
 PLOTLY_CONFIG = {
     "responsive": True,
     "displayModeBar": True,
@@ -67,11 +69,25 @@ def load_datasets() -> tuple[pd.DataFrame, pd.DataFrame]:
 def write_chart(fig: go.Figure, filename: str) -> None:
     fig.update_layout(
         template="plotly_white",
-        paper_bgcolor="white",
-        plot_bgcolor="white",
+        paper_bgcolor=CHART_BG,
+        plot_bgcolor=CHART_BG,
         font=dict(family="Inter, Arial, sans-serif", color="#1f2a30"),
         margin=dict(l=55, r=30, t=70, b=55),
         dragmode="pan",
+        xaxis=dict(
+            showgrid=True,
+            gridcolor=GRID_COLOR,
+            linecolor=AXIS_COLOR,
+            zerolinecolor=GRID_COLOR,
+            showline=True,
+        ),
+        yaxis=dict(
+            showgrid=True,
+            gridcolor=GRID_COLOR,
+            linecolor=AXIS_COLOR,
+            zerolinecolor=GRID_COLOR,
+            showline=True,
+        ),
     )
     fig.write_html(
         CHARTS / filename,
@@ -204,7 +220,7 @@ def build_task2_dataset() -> pd.DataFrame:
     return task2_df
 
 
-def build_act2(barca: pd.DataFrame) -> None:
+def build_act2() -> None:
     task2_df = build_task2_dataset()
     target_seasons = sorted(task2_df["season"].unique())
     player_growth = (
@@ -294,7 +310,7 @@ def build_act2(barca: pd.DataFrame) -> None:
         ay=-40,
         bgcolor="rgba(255,255,255,0.88)",
     )
-    write_chart(fig, "act2_control_into_chances.html")
+    write_chart(fig, "act2_hidden_gems.html")
 
 
 def build_task3_dataset() -> pd.DataFrame:
@@ -340,7 +356,7 @@ def build_task3_dataset() -> pd.DataFrame:
     return task3_df
 
 
-def build_act3(barca: pd.DataFrame) -> None:
+def build_act3() -> None:
     heat_df = build_task3_dataset()
     recurring_opponents = (
         heat_df.groupby("opponent_team_name")["season"]
@@ -557,17 +573,17 @@ def build_task4_elite_dataset(master: pd.DataFrame) -> pd.DataFrame:
 #     write_chart(fig, "act4_european_benchmark.html")
 def build_act4(master: pd.DataFrame) -> None:
     benchmark = build_task4_elite_dataset(master)
-    benchmark["label_name"] = benchmark["team_name"]
-    benchmark.loc[benchmark["team_name"] == "FC Barcelona", "label_name"] = ""
+    barca_mask = benchmark["team_name"] == "FC Barcelona"
+    barca_row = benchmark.loc[barca_mask].copy()
+    peers = benchmark.loc[~barca_mask].copy()
 
     # 1. TOP LAYER (ELITE TEAMS): Bubble Chart
     fig = px.scatter(
-        benchmark,
+        peers,
         x="avg_possession",
         y="goals_per_match",
         size="points_per_match", 
         color="league_name",
-        text="label_name",
         hover_name="team_name",
         hover_data=["avg_shot_accuracy", "seasons_observed", "top3_finishes", "avg_rank"],
         title="Task 4: Barcelona against top-3 teams vs Rest of Europe",
@@ -614,13 +630,14 @@ def build_act4(master: pd.DataFrame) -> None:
     barca_mask = benchmark["team_name"] == "FC Barcelona"
     fig.add_trace(
         go.Scatter(
-            x=benchmark.loc[barca_mask, "avg_possession"],
-            y=benchmark.loc[barca_mask, "goals_per_match"],
+            x=barca_row["avg_possession"],
+            y=barca_row["goals_per_match"],
             mode="markers+text",
-            text=benchmark.loc[barca_mask, "team_name"],
-            textposition="bottom center",
-            marker=dict(size=20, color="#912f40", symbol="diamond", line=dict(width=2, color="#ffffff")),
+            text=barca_row["team_name"],
+            textposition="bottom left",
+            marker=dict(size=18, color="#912f40", symbol="diamond", line=dict(width=2, color="#ffffff")),
             name="Barcelona highlight",
+            showlegend=False,
             hovertemplate="FC Barcelona<br>Avg possession=%{x:.2f}<br>Goals per match=%{y:.2f}<extra></extra>",
         )
     )
@@ -644,9 +661,9 @@ def build_act4(master: pd.DataFrame) -> None:
 
 
 def main() -> None:
-    master, barca = load_datasets()
-    build_act2(barca)
-    build_act3(barca)
+    master, _ = load_datasets()
+    build_act2()
+    build_act3()
     build_act4(master)
     patch_chart_interactivity("act1_boxplot.html")
     print(f"Saved charts to {CHARTS}")

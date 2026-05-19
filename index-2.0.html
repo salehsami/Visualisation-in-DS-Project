@@ -97,7 +97,7 @@
         <div class="chart-layout">
           <div class="chart-copy">
             <h3>Story function</h3>
-            <p>This opening view creates tension. If Barcelona can lose despite overwhelming possession, the audience immediately needs an explanation for where that control breaks down.</p>
+            <p>This opening chart challenges the usual assumption that possession automatically means control. It creates tension in the story by showing that Barcelona can still lose even when they dominate the ball, which makes the audience ask what is missing beyond possession.</p>
           </div>
           <div class="chart-card">
             <iframe class="chart-frame" src="./charts/act1_boxplot.html" title="Act 1 boxplot" loading="lazy"></iframe>
@@ -115,10 +115,10 @@
         <div class="chart-layout">
           <div class="chart-copy">
             <h3>Story function</h3>
-            <p>This scouting view now uses only Barcelona players and shows all available seasons for the shortlisted under-25 profiles. Players are shortlisted from the ones whose short passing and vision improve over their latest three-season window, then their full Barcelona progression is shown in the chart.</p>
+            <p>This chart shifts the story from team-level outcomes to player-level development. It looks for younger Barcelona players whose passing and vision improve over time, suggesting where the club might find future solutions within its own squad.</p>
           </div>
           <div class="chart-card">
-            <iframe class="chart-frame" src="./charts/act2_control_into_chances.html" title="Act 2 scouting for hidden gems" loading="lazy"></iframe>
+            <iframe class="chart-frame" src="./charts/act2_hidden_gems.html" title="Act 2 scouting for hidden gems" loading="lazy"></iframe>
             <div class="chart-note">Each player keeps one color across the chart, while solid lines show short passing and dashed lines show vision. The Plotly toolbar lets you zoom, reset axes, autoscale, and inspect the lines directly.</div>
           </div>
         </div>
@@ -133,9 +133,7 @@
         <div class="chart-layout">
           <div class="chart-copy">
             <h3>Story function</h3>
-            <p>This heatmap shows how many goals Barcelona scored on average against each opponent in each season. Each row is one opponent, each column is one season, and each cell combines both the number and the color for the same value.</p>
-            <p>Lighter cells mean Barcelona scored fewer goals per match on average, so they point to harder attacking matchups. Darker cells mean Barcelona scored more freely. Because the values are averages, numbers like 1.50 or 3.50 appear when Barcelona played the same opponent more than once in a season.</p>
-            <p>To keep the view readable, the chart focuses on the 12 recurring opponents against whom Barcelona scored the least on average across the period. That makes the “kryptonite” pattern easier to see than if every team were included.</p>
+            <p>This chart makes the problem more concrete by identifying which opponents repeatedly reduce Barcelona’s attacking output. Instead of treating weak performances as random, it shows that some matchups consistently disrupt Barcelona across seasons.</p>
           </div>
           <div class="chart-card">
             <iframe class="chart-frame" src="./charts/act3_kryptonite_heatmap.html" title="Act 3 kryptonite opponents" loading="lazy"></iframe>
@@ -153,13 +151,14 @@
         <div class="chart-layout">
           <div class="chart-copy">
             <h3>Story function</h3>
-            <p>This final benchmark reconstructs season standings from match results, keeps only the five major leagues, and then selects the three strongest long-run representatives from each league for comparison with Barcelona.</p>
+            <p>This final chart places Barcelona in a wider European context. It tests whether Barcelona’s profile is truly elite by comparing its possession and attacking output with the strongest long-run teams from the major leagues.</p>
           </div>
           <div class="chart-card">
             <iframe class="chart-frame" src="./charts/act4_european_benchmark.html" title="Act 4 European benchmark" loading="lazy"></iframe>
             <div class="chart-note">Position shows possession and goals per match, while bubble size adds points per match. The comparison group is data-driven and restricted to the top 3 teams from each major league.</div>
           </div>
         </div>
+        <p class="transition-note">Placed beside Europe’s strongest clubs, Barcelona still look elite, but the comparison also shows how small the margins are when control has to become decisive output.</p>
       </section>
 
       <section id="conclusion" class="panel panel-conclusion">

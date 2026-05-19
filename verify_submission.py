@@ -58,7 +58,7 @@ print("-" * 70)
 all_good &= check_file(
     "charts/act1_possession_vs_result.html", "Act 1: Possession analysis"
 )
-all_good &= check_file("charts/act2_control_into_chances.html", "Act 2: Season trends")
+all_good &= check_file("charts/act2_hidden_gems"".html", "Act 2: Season trends")
 all_good &= check_file(
     "charts/act3_kryptonite_heatmap.html", "Act 3: Difficult opponents"
 )

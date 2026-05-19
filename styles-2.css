@@ -86,8 +86,18 @@ i { margin-right: 5px; }
 .chart-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 3rem; align-items: start; }
 .chart-copy h3 { font-family: 'Inter', sans-serif; color: var(--barca-yellow); margin-bottom: 1rem; font-size: 1.2rem; }
 .chart-copy p { color: var(--text-muted); }
-.chart-card { background-color: white; border-radius: 8px; padding: 1rem; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-.chart-frame { width: 100%; height: 500px; border: none; }
+.chart-card {
+  background-color: #eceff1;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+.chart-frame {
+  width: 100%;
+  height: 500px;
+  border: none;
+  background-color: #eceff1;
+}
 .chart-note { margin-top: 1rem; font-size: 0.85rem; color: #666; text-align: center; font-style: italic; }
 .transition-note {
   margin-top: 1.5rem;
