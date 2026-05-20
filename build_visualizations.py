@@ -1068,7 +1068,7 @@ def build_act4(master: pd.DataFrame) -> None:
             "league_name",
             "points_per_match",
         ],
-        title="Task 4: Barcelona against top-3 teams from Europe's major leagues",
+        title="Barcelona against top-3 teams from Europe's major leagues",
         size_max=18,
     )
 
