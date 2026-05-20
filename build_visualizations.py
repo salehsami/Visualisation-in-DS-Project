@@ -1065,6 +1065,8 @@ def build_act4(master: pd.DataFrame) -> None:
             goals_per_match=("goals_for", "mean"),
         )
     )
+    elite_teams_list = benchmark["team_name"].unique()
+    all_teams = all_teams[~all_teams["team_name"].isin(elite_teams_list)]
 
     fig.add_trace(
         go.Scatter(
