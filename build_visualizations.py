@@ -331,8 +331,8 @@ def build_task3_dataset() -> pd.DataFrame:
         }
     )
 
-    match = match.merge(home_lookup, on="home_team_api_id", how="left")
-    match = match.merge(away_lookup, on="away_team_api_id", how="left")
+    match = match.merge(home_lookup, on="home_team_api_id", how="inner")
+    match = match.merge(away_lookup, on="away_team_api_id", how="inner")
 
     barca_name = "FC Barcelona"
     barca_matches = match[
