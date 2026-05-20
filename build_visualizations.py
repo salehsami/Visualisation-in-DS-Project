@@ -1115,7 +1115,7 @@ def build_act4(master: pd.DataFrame) -> None:
 
     fig.update_layout(
         title=dict(
-            text="Task 4: Barcelona against top-3 teams from Europe's major leagues",
+            text="Barcelona against top-3 teams from Europe's major leagues",
             x=0.5,
         ),
         xaxis_title="Average possession (%)",
