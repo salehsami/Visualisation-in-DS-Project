@@ -1025,8 +1025,10 @@ def build_act4(master: pd.DataFrame) -> None:
 
     all_home = master[["home_team_name", "home_possession", "home_team_goal"]].copy()
     all_home.columns = ["team_name", "possession", "goals_for"]
+
     all_away = master[["away_team_name", "away_possession", "away_team_goal"]].copy()
     all_away.columns = ["team_name", "possession", "goals_for"]
+
     all_teams = pd.concat([all_home, all_away], ignore_index=True)
     all_teams = (
         all_teams.dropna(subset=["possession", "goals_for"])
@@ -1037,17 +1039,23 @@ def build_act4(master: pd.DataFrame) -> None:
         )
     )
 
+    all_teams = all_teams[~all_teams["team_name"].isin(benchmark["team_name"])].copy()
+
     fig.add_trace(
         go.Scatter(
             x=all_teams["avg_possession"],
             y=all_teams["goals_per_match"],
             mode="markers",
-            marker=dict(size=7, color="rgba(140, 146, 156, 0.38)"),
-            name="All European teams",
+            marker=dict(
+                size=6,
+                color="rgba(140, 146, 156, 0.30)",
+                line=dict(width=0),
+            ),
+            name="Other European teams",
             hovertemplate=(
                 "<b>%{customdata[0]}</b><br>"
                 "Avg possession: %{x:.2f}%<br>"
-                "Goals per match: %{y:.2f}<extra>Background layer</extra>"
+                "Goals per match: %{y:.2f}<extra>Context team</extra>"
             ),
             customdata=all_teams[["team_name"]].to_numpy(),
         )
@@ -1068,14 +1076,13 @@ def build_act4(master: pd.DataFrame) -> None:
             "league_name",
             "points_per_match",
         ],
-        title="Barcelona against top-3 teams from Europe's major leagues",
         size_max=18,
     )
 
     elite_fig.update_traces(
         marker_line_width=1.5,
         marker_line_color="white",
-        opacity=0.85,
+        opacity=0.88,
         hovertemplate=(
             "<b>%{hovertext}</b><br>"
             "League: %{customdata[4]}<br>"
@@ -1085,9 +1092,10 @@ def build_act4(master: pd.DataFrame) -> None:
             "Shot accuracy: %{customdata[0]:.2f}<br>"
             "Seasons observed: %{customdata[1]}<br>"
             "Top-3 finishes: %{customdata[2]}<br>"
-            "Average rank: %{customdata[3]:.2f}<extra>Elite benchmark</extra>"
+            "Average rank: %{customdata[3]:.2f}<extra>Top-3 benchmark</extra>"
         ),
     )
+
     for trace in elite_fig.data:
         fig.add_trace(trace)
 
@@ -1095,9 +1103,16 @@ def build_act4(master: pd.DataFrame) -> None:
         go.Scatter(
             x=barca_row["avg_possession"],
             y=barca_row["goals_per_match"],
-            mode="markers",
-            marker=dict(size=18, color="#912f40", symbol="diamond", line=dict(width=2, color="#ffffff")),
-            name="Barcelona",
+            mode="markers+text",
+            text=["FC Barcelona"],
+            textposition="bottom center",
+            marker=dict(
+                size=19,
+                color="#912f40",
+                symbol="diamond",
+                line=dict(width=2, color="#ffffff"),
+            ),
+            name="FC Barcelona",
             showlegend=True,
             hovertemplate=(
                 "<b>FC Barcelona</b><br>"
@@ -1109,7 +1124,15 @@ def build_act4(master: pd.DataFrame) -> None:
                 "Top-3 finishes: %{customdata[3]}<br>"
                 "Average rank: %{customdata[4]:.2f}<extra>Barcelona highlight</extra>"
             ),
-            customdata=barca_row[["points_per_match", "avg_shot_accuracy", "seasons_observed", "top3_finishes", "avg_rank"]].to_numpy(),
+            customdata=barca_row[
+                [
+                    "points_per_match",
+                    "avg_shot_accuracy",
+                    "seasons_observed",
+                    "top3_finishes",
+                    "avg_rank",
+                ]
+            ].to_numpy(),
         )
     )
 
@@ -1121,7 +1144,7 @@ def build_act4(master: pd.DataFrame) -> None:
         xaxis_title="Average possession (%)",
         yaxis_title="Goals per match",
         yaxis=dict(range=[0, max(3.2, y_max + 0.25)]),
-        legend_title="League",
+        legend_title="Team group",
         legend=dict(
             orientation="v",
             yanchor="top",
@@ -1131,9 +1154,8 @@ def build_act4(master: pd.DataFrame) -> None:
             itemsizing="constant",
         ),
     )
-    
-    write_chart(fig, "act4_european_benchmark.html")
 
+    write_chart(fig, "act4_european_benchmark.html")
 
 def main() -> None:
     master, barca = load_datasets()
