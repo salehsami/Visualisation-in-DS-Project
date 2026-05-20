@@ -981,7 +981,7 @@ def build_task4_elite_dataset(master: pd.DataFrame) -> pd.DataFrame:
 #         text="label_name",
 #         hover_name="team_name",
 #         hover_data=["avg_shot_accuracy", "seasons_observed", "top3_finishes", "avg_rank"],
-#         title="Task 4: Barcelona against top-3 teams from Europe's major leagues",
+#         title="Barcelona against top-3 teams from Europe's major leagues",
 #     )
 #     fig.update_traces(
 #         textposition="top center",
