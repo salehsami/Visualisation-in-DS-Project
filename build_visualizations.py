@@ -1014,8 +1014,18 @@ def build_task4_elite_dataset(master: pd.DataFrame) -> pd.DataFrame:
 #         ),
 #     )
 #     write_chart(fig, "act4_european_benchmark.html")
+
 def build_act4(master: pd.DataFrame) -> None:
     benchmark = build_task4_elite_dataset(master)
+
+    benchmark_team_names = set(
+        benchmark["team_name"]
+        .dropna()
+        .astype(str)
+        .str.strip()
+        .tolist()
+    )
+
     barca_mask = benchmark["team_name"] == "FC Barcelona"
     barca_row = benchmark.loc[barca_mask].copy()
     peers = benchmark.loc[~barca_mask].copy()
@@ -1023,23 +1033,31 @@ def build_act4(master: pd.DataFrame) -> None:
 
     fig = go.Figure()
 
-    all_home = master[["home_team_name", "home_possession", "home_team_goal"]].copy()
+    all_home = master[
+        ["home_team_name", "home_possession", "home_team_goal"]
+    ].copy()
     all_home.columns = ["team_name", "possession", "goals_for"]
 
-    all_away = master[["away_team_name", "away_possession", "away_team_goal"]].copy()
+    all_away = master[
+        ["away_team_name", "away_possession", "away_team_goal"]
+    ].copy()
     all_away.columns = ["team_name", "possession", "goals_for"]
 
-    all_teams = pd.concat([all_home, all_away], ignore_index=True)
+    all_teams_raw = pd.concat([all_home, all_away], ignore_index=True)
+    all_teams_raw["team_name"] = all_teams_raw["team_name"].astype(str).str.strip()
+
+    all_teams_raw = all_teams_raw[
+        ~all_teams_raw["team_name"].isin(benchmark_team_names)
+    ].copy()
+
     all_teams = (
-        all_teams.dropna(subset=["possession", "goals_for"])
+        all_teams_raw.dropna(subset=["possession", "goals_for"])
         .groupby("team_name", as_index=False)
         .agg(
             avg_possession=("possession", "mean"),
             goals_per_match=("goals_for", "mean"),
         )
     )
-
-    all_teams = all_teams[~all_teams["team_name"].isin(benchmark["team_name"])].copy()
 
     fig.add_trace(
         go.Scatter(
@@ -1048,14 +1066,14 @@ def build_act4(master: pd.DataFrame) -> None:
             mode="markers",
             marker=dict(
                 size=6,
-                color="rgba(140, 146, 156, 0.30)",
+                color="rgba(140, 146, 156, 0.28)",
                 line=dict(width=0),
             ),
             name="Other European teams",
             hovertemplate=(
                 "<b>%{customdata[0]}</b><br>"
                 "Avg possession: %{x:.2f}%<br>"
-                "Goals per match: %{y:.2f}<extra>Context team</extra>"
+                "Goals per match: %{y:.2f}<extra>Context teams</extra>"
             ),
             customdata=all_teams[["team_name"]].to_numpy(),
         )
@@ -1099,42 +1117,43 @@ def build_act4(master: pd.DataFrame) -> None:
     for trace in elite_fig.data:
         fig.add_trace(trace)
 
-    fig.add_trace(
-        go.Scatter(
-            x=barca_row["avg_possession"],
-            y=barca_row["goals_per_match"],
-            mode="markers+text",
-            text=["FC Barcelona"],
-            textposition="bottom center",
-            marker=dict(
-                size=19,
-                color="#912f40",
-                symbol="diamond",
-                line=dict(width=2, color="#ffffff"),
-            ),
-            name="FC Barcelona",
-            showlegend=True,
-            hovertemplate=(
-                "<b>FC Barcelona</b><br>"
-                "Avg possession: %{x:.2f}%<br>"
-                "Goals per match: %{y:.2f}<br>"
-                "Points per match: %{customdata[0]:.2f}<br>"
-                "Shot accuracy: %{customdata[1]:.2f}<br>"
-                "Seasons observed: %{customdata[2]}<br>"
-                "Top-3 finishes: %{customdata[3]}<br>"
-                "Average rank: %{customdata[4]:.2f}<extra>Barcelona highlight</extra>"
-            ),
-            customdata=barca_row[
-                [
-                    "points_per_match",
-                    "avg_shot_accuracy",
-                    "seasons_observed",
-                    "top3_finishes",
-                    "avg_rank",
-                ]
-            ].to_numpy(),
+    if not barca_row.empty:
+        fig.add_trace(
+            go.Scatter(
+                x=barca_row["avg_possession"],
+                y=barca_row["goals_per_match"],
+                mode="markers+text",
+                text=["FC Barcelona"],
+                textposition="bottom center",
+                marker=dict(
+                    size=19,
+                    color="#912f40",
+                    symbol="diamond",
+                    line=dict(width=2, color="#ffffff"),
+                ),
+                name="FC Barcelona",
+                showlegend=True,
+                hovertemplate=(
+                    "<b>FC Barcelona</b><br>"
+                    "Avg possession: %{x:.2f}%<br>"
+                    "Goals per match: %{y:.2f}<br>"
+                    "Points per match: %{customdata[0]:.2f}<br>"
+                    "Shot accuracy: %{customdata[1]:.2f}<br>"
+                    "Seasons observed: %{customdata[2]}<br>"
+                    "Top-3 finishes: %{customdata[3]}<br>"
+                    "Average rank: %{customdata[4]:.2f}<extra>Barcelona highlight</extra>"
+                ),
+                customdata=barca_row[
+                    [
+                        "points_per_match",
+                        "avg_shot_accuracy",
+                        "seasons_observed",
+                        "top3_finishes",
+                        "avg_rank",
+                    ]
+                ].to_numpy(),
+            )
         )
-    )
 
     fig.update_layout(
         title=dict(
