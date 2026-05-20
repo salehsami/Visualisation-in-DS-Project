@@ -812,35 +812,32 @@ def build_act3() -> None:
         .head(12)
         .index
     )
-    heat_df["opponent_team_name"] = pd.Categorical(
-        heat_df["opponent_team_name"], categories=list(opponent_order), ordered=True
+    
+    heat_df = heat_df[heat_df["opponent_team_name"].isin(opponent_order)]
+    pivot_df = heat_df.pivot(
+        index="opponent_team_name",
+        columns="season",
+        values="avg_barca_goals"
     )
-    heat_df = heat_df.sort_values(["opponent_team_name", "season"])
-
-    fig = px.density_heatmap(
-        heat_df,
-        x="season",
-        y="opponent_team_name",
-        z="avg_barca_goals",
-        histfunc="avg",
-        text_auto=".2f",
+    
+    pivot_df = pivot_df.loc[list(opponent_order)]
+    fig = px.imshow(
+        pivot_df,
+        labels=dict(x="Season", y="Opponent team", color="Avg Barça goals"),
+        x=pivot_df.columns,
+        y=pivot_df.index,
+        text_auto=".2f", # type: ignore
+        aspect="auto",
         color_continuous_scale=[
-            [0.0, "#f4f7fb"],
-            [0.25, "#d6e4f0"],
-            [0.5, "#9fc5e8"],
-            [0.75, "#5b8db8"],
-            [1.0, "#1f4e79"],
+            [0.0, "#f7fbff"], 
+            [0.35, "#c6dbef"],
+            [0.70, "#4292c6"],
+            [1.0, "#08306b"],
         ],
-        title="Task 3: Barcelona goals by opponent and season",
-    )
-    fig.update_traces(
-        hovertemplate=(
-            "<b>%{y}</b><br>"
-            "Season: %{x}<br>"
-            "Avg Barça goals: %{z:.2f}<extra></extra>"
-        )
+        title="Barcelona goals by opponent and season",
     )
     fig.update_layout(
+        plot_bgcolor="#e9ecef", 
         xaxis_title="Season",
         yaxis_title="Opponent team",
         coloraxis_colorbar_title="Avg Barça goals",
