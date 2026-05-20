@@ -795,7 +795,6 @@ def build_task3_dataset() -> pd.DataFrame:
     )
     return task3_df
 
-
 def build_act3() -> None:
     heat_df = build_task3_dataset()
     recurring_opponents = (
@@ -843,7 +842,6 @@ def build_act3() -> None:
         coloraxis_colorbar_title="Avg Barça goals",
     )
     write_chart(fig, "act3_kryptonite_heatmap.html")
-
 
 def build_task4_elite_dataset(master: pd.DataFrame) -> pd.DataFrame:
     major_leagues = [
