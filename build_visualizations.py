@@ -317,10 +317,18 @@ def patch_act2_skill_legend(filename: str) -> None:
 <script>
 (function () {
   const gd = document.querySelector('.plotly-graph-div');
-  if (!gd) return;
-  const wrapper = document.createElement('div');
-  wrapper.id = 'act2-controls';
-  wrapper.style.cssText = 'display:flex;flex-wrap:nowrap;gap:6px;justify-content:flex-start;align-items:center;margin:6px 0 10px;padding:0 14px 0 34px;box-sizing:border-box;max-width:100%;font-family:Inter,Arial,sans-serif;overflow:visible;';
+    if (!gd) return;
+
+    const plotContainer = gd.parentElement;
+
+    const title = document.createElement('div');
+    title.id = 'act2-external-title';
+    title.textContent = 'Scouting under-25 hidden gems across European leagues';
+    title.style.cssText = 'font-family:Inter,Arial,sans-serif;font-size:26px;font-weight:500;color:#1f2a30;text-align:center;margin:28px 20px 18px;line-height:1.25;';
+
+    const wrapper = document.createElement('div');
+    wrapper.id = 'act2-controls';
+    wrapper.style.cssText = 'display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;margin:0 18px 18px;padding:0;box-sizing:border-box;max-width:100%;font-family:Inter,Arial,sans-serif;overflow:visible;';
 
   function makeControl(labelText, id) {
     const label = document.createElement('label');
@@ -739,13 +747,12 @@ def build_act2() -> None:
     )
 
     fig.update_layout(
-        title="Scouting under-25 hidden gems across European leagues",
-        xaxis_title="Season",
-        yaxis_title="Attribute value (0-100)",
-        legend_title="Players",
-        legend=dict(groupclick="togglegroup"),
-        title_x=0.5,
-        margin=dict(l=70, r=40, t=90, b=60),
+    title=None,
+    xaxis_title="Season",
+    yaxis_title="Attribute value (0-100)",
+    legend_title="Players",
+    legend=dict(groupclick="togglegroup"),
+    margin=dict(l=70, r=40, t=45, b=60),
     )
     fig.update_xaxes(categoryorder="array", categoryarray=target_seasons)
     fig.update_yaxes(range=[0, 100])
