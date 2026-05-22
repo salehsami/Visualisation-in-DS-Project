@@ -65,7 +65,7 @@ Visualisation-in-DS-Project/
 │
 ├── charts/
 │   ├── act1_possession_vs_result.html  # Possession scatter by result and venue
-│   ├── act2_control_into_chances.html  # Season-by-season shot and goal trends
+│   ├── act2_hidden gems.html           # Season-by-season shot and goal trends
 │   ├── act3_kryptonite_heatmap.html    # Goal output against difficult opponents
 │   └── act4_european_benchmark.html    # Benchmarking against elite European clubs
 │
