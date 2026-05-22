@@ -211,27 +211,13 @@ def build_act1(barca: pd.DataFrame) -> None:
             categoryarray=result_order,
         ),
         boxmode="overlay",
-        annotations=[
-            dict(
-                x=75.0,
-                y="Loss",
-                text="High possession can still end in defeat",
-                showarrow=True,
-                arrowhead=2,
-                ax=40,
-                ay=-40,
-                bgcolor="rgba(255, 255, 255, 0.9)",
-                bordercolor="#bb4d4d",
-                borderwidth=1,
-                borderpad=4,
-            )
-        ],
+        margin=dict(l=55, r=30, t=110, b=55),
         updatemenus=[
             dict(
                 type="dropdown",
                 direction="down",
                 x=0.82,
-                y=0.99,
+                y=1.18,
                 xanchor="right",
                 yanchor="top",
                 showactive=True,
@@ -265,8 +251,8 @@ def build_act1(barca: pd.DataFrame) -> None:
             dict(
                 type="dropdown",
                 direction="down",
-                x=0.99,
-                y=0.99,
+                x=1.03,
+                y=1.18,
                 xanchor="right",
                 yanchor="top",
                 showactive=True,
@@ -320,7 +306,7 @@ def patch_act2_skill_legend(filename: str) -> None:
   if (!gd) return;
   const wrapper = document.createElement('div');
   wrapper.id = 'act2-controls';
-  wrapper.style.cssText = 'display:flex;flex-wrap:nowrap;gap:6px;justify-content:flex-start;align-items:center;margin:6px 0 10px;padding:0 14px 0 34px;box-sizing:border-box;max-width:100%;font-family:Inter,Arial,sans-serif;overflow:visible;';
+  wrapper.style.cssText = 'display:flex;flex-wrap:nowrap;gap:6px;justify-content:flex-start;align-items:center;margin:6px 0 10px;padding:0 14px 0 40px;box-sizing:border-box;max-width:100%;font-family:Inter,Arial,sans-serif;overflow:visible;';
 
   function makeControl(labelText, id) {
     const label = document.createElement('label');
@@ -344,14 +330,22 @@ def patch_act2_skill_legend(filename: str) -> None:
   const skillSel = makeControl('Skill', 'act2-skill');
 
   const plotContainer = gd.parentElement;
+  const host = plotContainer.parentElement;
   const titleNode = plotContainer.querySelector('.gtitle');
   const titleGroup = titleNode ? titleNode.parentElement : null;
-  if (titleGroup && titleGroup.parentElement) {
+  host.style.position = 'relative';
+  wrapper.style.position = 'absolute';
+  wrapper.style.left = '0';
+  wrapper.style.right = '0';
+  wrapper.style.zIndex = '3';
+  if (titleGroup) {
     const titleBox = titleGroup.getBoundingClientRect();
-    const plotBox = plotContainer.getBoundingClientRect();
-    wrapper.style.margin = (Math.max(12, titleBox.bottom - plotBox.top + 10)) + 'px 0 10px';
+    const hostBox = host.getBoundingClientRect();
+    wrapper.style.top = Math.max(38, titleBox.bottom - hostBox.top - 2) + 'px';
+  } else {
+    wrapper.style.top = '38px';
   }
-  plotContainer.parentElement.insertBefore(wrapper, plotContainer);
+  host.appendChild(wrapper);
 
   const traceMeta = gd.data.map((trace, idx) => ({
     idx,
@@ -745,7 +739,7 @@ def build_act2() -> None:
         legend_title="Players",
         legend=dict(groupclick="togglegroup"),
         title_x=0.5,
-        margin=dict(l=70, r=40, t=90, b=60),
+        margin=dict(l=70, r=40, t=125, b=60),
     )
     fig.update_xaxes(categoryorder="array", categoryarray=target_seasons)
     fig.update_yaxes(range=[0, 100])
