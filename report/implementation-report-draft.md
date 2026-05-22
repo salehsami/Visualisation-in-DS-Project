@@ -8,6 +8,7 @@
 - Dataset: Football / FC Barcelona analysis (2008–2016)
 - Repository: https://github.com/salehsami/Visualisation-in-DS-Project
 - Data: European Soccer Database (adapted from Kaggle, curated by Inigo Bermejo for VDS2526)
+- Video: https://youtu.be/V1OkavkefCk
 
 ---
 
@@ -197,9 +198,9 @@ This structure also makes the video presentation straightforward, since each tra
 
 ## Part 7. Video link
 
-`[YouTube link to be added before submission]`
+https://youtu.be/V1OkavkefCk
 
-The video should run 3–5 minutes and follow the same narrative order as the web implementation. Suggested structure:
+The video runs around 6 minutes and follows the same narrative order as the web implementation. Suggested structure:
 
 1. Open with the possession question (Act 1) — show the home/away filter
 2. Transition to the season trends (Act 2) — point out the 2011/2012 peak
